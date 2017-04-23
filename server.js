@@ -30,7 +30,7 @@ if (isDevMode) {
 
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  app.get('*', function response(req, res) {
+  app.get('*', (req, res) => {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
     res.end();
   });
@@ -38,13 +38,13 @@ if (isDevMode) {
 } else {
 
   app.use(express.static(__dirname + '/dist'));
-  app.get('*', function response(req, res) {
+  app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
 
 }
 
-app.listen(port, function(error) {
+app.listen(port, (error) => {
   if (error) {
     console.error(error);
   } else {
