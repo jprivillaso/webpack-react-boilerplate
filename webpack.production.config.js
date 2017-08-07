@@ -13,7 +13,8 @@ const extractCSS = new ExtractTextPlugin({
 
 module.exports = {
   entry: [
-    path.join(__dirname, 'src/index.js')
+    path.join(__dirname, 'src/index.js'),
+    path.join(__dirname, 'src/styles.scss'),
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
@@ -22,6 +23,13 @@ module.exports = {
     chunkFilename: 'chunk-[id]-[name].js',
     pathinfo: true
   },
+  resolve: {
+    modules: [
+      'lib',
+      'node_modules'
+    ],
+    extensions: ['.js', '.jsx', '.json', '.scss'],
+  },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new HtmlWebpackPlugin({
@@ -29,7 +37,7 @@ module.exports = {
       inject: 'body',
       filename: 'index.html'
     }),
-    new ExtractTextPlugin('styles.css'),
+    extractCSS,
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false,
@@ -45,26 +53,22 @@ module.exports = {
     })
   ],
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader',
-      query: {
-        'presets': ['es2015', 'stage-0', 'react']
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'stage-0', 'react']
+        }
+      },
+      {
+        test: /\.scss$/,
+        use: extractCSS.extract({
+          fallback: 'style-loader',
+          use: 'css-loader!sass-loader',
+        })
       }
-    }, {
-      test: /\.less$/,
-      use: [
-        'style-loader',
-        'css-loader',
-        'less-loader'
-      ]
-    }, {
-      test: /\.scss$/,
-      use: extractCSS.extract({
-        fallback: 'style-loader',
-        use: 'css-loader!sass-loader',
-      })
-    }]
+    ]
   }
 };
