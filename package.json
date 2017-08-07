@@ -1,7 +1,7 @@
 {
   "name": "webpack-react-boilerplate",
   "version": "1.0.0",
-  "repository": "",
+  "repository": "https://github.com/jprivillaso/webpack-react-boilerplate",
   "description": "Boilerplate to be used for any project",
   "main": "viridis.ui.widget.js",
   "author": "Juan Rivillas",
