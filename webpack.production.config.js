@@ -6,6 +6,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const StatsPlugin = require('stats-webpack-plugin');
 
+const extractCSS = new ExtractTextPlugin({
+  filename: '[name].css',
+  ignoreOrder: true
+});
+
 module.exports = {
   entry: [
     path.join(__dirname, 'src/index.js')
@@ -13,7 +18,9 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/dist/'),
     filename: 'bundle.min.js',
-    publicPath: '/'
+    publicPath: '/',
+    chunkFilename: 'chunk-[id]-[name].js',
+    pathinfo: true
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -41,19 +48,23 @@ module.exports = {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel',
+      loader: 'babel-loader',
       query: {
         'presets': ['es2015', 'stage-0', 'react']
       }
     }, {
-      test: /\.json?$/,
-      loader: 'json'
+      test: /\.less$/,
+      use: [
+        'style-loader',
+        'css-loader',
+        'less-loader'
+      ]
     }, {
-      test: /\.css$/,
-      loader: ExtractTextPlugin.extract('style', 'css?modules&localIdentName=[name]---[local]---[hash:base64:5]!postcss')
+      test: /\.scss$/,
+      use: extractCSS.extract({
+        fallback: 'style-loader',
+        use: 'css-loader!sass-loader',
+      })
     }]
-  },
-  postcss: [
-    require('autoprefixer')
-  ]
+  }
 };
