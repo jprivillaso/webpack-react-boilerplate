@@ -16,6 +16,7 @@ module.exports = {
     path.join(__dirname, 'src/index.js'),
     path.join(__dirname, 'src/styles.scss'),
   ],
+  devtool: 'eval-source-map',
   output: {
     path: path.join(__dirname, '/dist/'),
     filename: 'bundle.min.js',
@@ -42,6 +43,9 @@ module.exports = {
       compressor: {
         warnings: false,
         screw_ie8: true
+      },
+      mangle: {
+        except: ['viridisDashboard', 'viridisDashboard.gridster', 'viridisDashboard.gridster.getGridLayout']
       }
     }),
     new StatsPlugin('webpack.stats.json', {
