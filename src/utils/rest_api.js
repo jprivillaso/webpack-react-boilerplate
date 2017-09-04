@@ -21,7 +21,7 @@ export default class RestApi {
     const requestParams = Object.assign({}, params, {
       url: `${BASE_REST_API}/${url}`,
       type: 'POST',
-      body: JSON.stringify(postData),
+      data: JSON.stringify(postData),
       crossDomain: true
     });
 
