@@ -43,9 +43,6 @@ module.exports = {
       compressor: {
         warnings: false,
         screw_ie8: true
-      },
-      mangle: {
-        except: ['viridisDashboard', 'viridisDashboard.gridster', 'viridisDashboard.gridster.getGridLayout']
       }
     }),
     new StatsPlugin('webpack.stats.json', {
@@ -54,6 +51,10 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
+    new webpack.DllReferencePlugin({
+      context: '.',
+      manifest: require('./dist/vendor-manifest.json')
     })
   ],
   module: {
