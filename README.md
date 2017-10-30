@@ -1,6 +1,14 @@
-# webpack-react-boilerplate
+# React boilerplate
 
-Welcome! 
-This is a boilerplate to be used with webpack and any framework. Note that I used a React example, but inside the src folder you can put any code.  
+Welcome!
+The idea of this boilerplate is to give you a simple configuration to start a React-Redux project.
+It doesn't have magic code, instead it gives you a very simple to understand example that uses:
 
-Updated to use webpack 3.4.1
+- React
+- Redux
+- Redux-Saga
+- Moment
+
+Webpack configuration uses very common plugins that optimizes the performance of your build!
+
+Feel free to open a pull request or an issue.
