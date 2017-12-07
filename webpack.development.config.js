@@ -11,15 +11,15 @@ const extractCSS = new ExtractTextPlugin({
 });
 
 const SRC_PATH = path.join(__dirname, 'src');
-const DIST_PATH = path.join(__dirname, '/dist/');
+const DIST_PATH = path.join(__dirname, 'dist');
 
 module.exports = {
-  devtool: 'eval-source-map',
+  context: path.resolve(__dirname),
   entry: {
     main: [
       'babel-polyfill',
-      'webpack-hot-middleware/client?reload=true',
-      'react-hot-loader/patch',
+      'webpack-dev-server/client?http://localhost:3000/',
+      'webpack/hot/dev-server',
       `${SRC_PATH}/index.js`,
       `${SRC_PATH}/styles.scss`
     ]
@@ -27,8 +27,21 @@ module.exports = {
   output: {
     path: DIST_PATH,
     filename: 'js/[name].js',
-    publicPath: '/static/'
+    publicPath: '/'
   },
+  devServer: {
+    contentBase: path.resolve(__dirname, 'dist'),
+    host: '0.0.0.0',
+    port: 3000,
+    hot: true,
+    inline: true,
+    disableHostCheck: true,
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000
+    }
+  },
+  devtool: 'eval-source-map',
   module: {
     loaders: [
       {

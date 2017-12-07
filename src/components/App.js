@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import {bindActionCreators} from 'redux';
 import PropTypes from 'prop-types';
 
-import moment from 'moment';
-
 import { getDataFromServer } from '~actions';
+import Utils from './Utils';
 
 class App extends Component {
 
@@ -20,10 +19,8 @@ class App extends Component {
 
   getUsersList(users) {
 
-    const time = moment().format('hh:mm:ss');
-
     return users.map((item, i) => {
-      return <h1 key={i}>User: {item} - Time: {time}</h1>;
+      return <h1 key={i}>{Utils.formatText(item)}</h1>;
     });
 
   }

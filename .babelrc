@@ -1,9 +1,8 @@
 {
   "presets": [
-    ["es2015", {
-      "es2015": {
-        "loose": true,
-        "modules": false
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 Chrome versions"]
       }
     }],
     "react",

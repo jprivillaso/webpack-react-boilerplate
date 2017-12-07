@@ -13,14 +13,15 @@ const extractCSS = new ExtractTextPlugin({
 
 module.exports = {
   entry: [
+    'babel-polyfill',
     path.join(__dirname, 'src/index.js'),
     path.join(__dirname, 'src/styles.scss'),
   ],
   devtool: 'eval-source-map',
   output: {
-    path: path.join(__dirname, '/dist/'),
+    path: path.join(__dirname, '/dist'),
     filename: 'bundle.min.js',
-    publicPath: '/',
+    publicPath: '',
     chunkFilename: 'chunk-[id]-[name].js',
     pathinfo: true
   },

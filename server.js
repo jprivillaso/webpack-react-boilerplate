@@ -3,8 +3,7 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
+const WebpackDevServer = require('webpack-dev-server');
 
 const port = 3000;
 const config = require(`./webpack.${process.env.NODE_ENV}.config.js`);
@@ -15,9 +14,9 @@ const app = express();
 if (isDevMode) {
 
   const compiler = webpack(config);
-  const middleware = webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath,
-    contentBase: 'src',
+  const middleware = new WebpackDevServer(compiler, {
+    publicPath: '/',
+    contentBase: '/',
     stats: {
       colors: true,
       hash: false,
@@ -25,29 +24,30 @@ if (isDevMode) {
       chunks: false,
       chunkModules: false,
       modules: false
+    },
+    quiet: false,
+    noInfo: false,
+    watchOptions: {
+      poll: true
     }
   });
 
-  app.use(middleware);
-  app.use(webpackHotMiddleware(compiler));
-  app.get('*', (req, res) => {
-    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
-    res.end();
-  });
+  middleware.listen(port);
 
 } else {
 
-  app.use(express.static(__dirname + '/dist'));
-  app.get('*', (req, res) => {
+  app.use(express.static(path.join(__dirname, 'dist')));
+  app.get('/', (req, res) => {
+    console.log('Request');
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
 
-}
+  app.listen(port, (error) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.info('==> Production: 🌎  Listening on port %s. Open up ' + 'http://localhost:%s/ in your browser.', port, port);
+    }
+  });
 
-app.listen(port, (error) => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.info('==> 🌎  Listening on port %s. Open up ' + 'http://localhost:%s/ in your browser.', port, port);
-  }
-});
+}
