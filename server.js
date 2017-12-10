@@ -6,8 +6,9 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
 const port = 3000;
-const config = require(`./webpack.${process.env.NODE_ENV}.config.js`);
-const isDevMode = process.env.NODE_ENV !== 'production';
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const config = require(`./webpack.${NODE_ENV}.config.js`);
+const isDevMode = NODE_ENV !== 'production';
 
 const app = express();
 
@@ -38,7 +39,6 @@ if (isDevMode) {
 
   app.use(express.static(path.join(__dirname, 'dist')));
   app.get('/', (req, res) => {
-    console.log('Request');
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
 
